@@ -36,7 +36,7 @@ class ssaScanner(object):
 	Define relevant methods to read, modify and overwrite
 	.ssa file.
 	NOTE: Sometimes there is a BOM char at the beginning of file
-	XXX add common font names, color definition  in future XXX
+	XXX add common font names, color definition  in future
 	'''
 	ssa_tree = None
 	ssa_name = ""
@@ -80,9 +80,9 @@ class ssaScanner(object):
 						# Add substring to ssa_tree[#current_section]
 
 						index = n.group(0).find(':')
-						entry_key = n.group(0)[0:index+1].strip()	# substring divided by the first ':' is the key of entry
+						entry_key = n.group(0)[0:index].strip()	# substring divided by the first ':' is the key of entry
 																	# unpack the remaining contents into a token list
-						entry_list = [token.strip() for item in n.group(0)[index+1:].split(',')]
+						entry_list = [token.strip() for token in n.group(0)[index+1:].split(',')]
 																	# add the list into ssa_tree
 						try:
 							ssa_tree[current_section][entry_key].append(entry_list)
@@ -93,9 +93,6 @@ class ssaScanner(object):
 						continue
 			else:
 				s = re.search('[^\s]', line_no_comment[m.end()+1:])	# search for any illegal characters
-				print(m, s)
-				print(ord(line_no_comment[0]))
-				print(line_no_comment[1:])
 				if m.start() != 0 or s != None:
 					raise ssaScanner.parseError("Line " + str(current_line) + ", illegal tokens", Errno.UNDEF_ELEMENT)
 				else:
@@ -115,6 +112,9 @@ class ssaScanner(object):
 			self.ssa_dir = os.path.join(os.getcwd(), file_name)
 			self.ssa_name = file_name.split('/')[-1]
 			contents = fp.readlines()
+			# clear BOM char
+			if ord(contents[0][0]) == 0xfeff:
+				contents[0] = contents[0][1:]
 			self.ssa_tree = self.parse_file(contents)
 
 	def __str__(self):
