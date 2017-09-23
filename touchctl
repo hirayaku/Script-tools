@@ -1,0 +1,74 @@
+#!/bin/bash
+
+# Enable/disable touchpad conveniently
+# xinput should be installed
+
+opt_num=$#
+script_name=`basename "$0"`
+fail_code=127
+cmd=xinput
+device_name='Touchpad'
+help_text="${script_name} [-h|--help] [disable|enable]"
+
+function how_to_use {
+    echo $help_text
+    exit $1
+}
+
+# parse input options
+PRINT_HELP='NO'
+if [ $opt_num -eq 0 ]; then
+    how_to_use 1
+else
+    for opt in "$@"
+    do
+        case $opt in
+            -h*|--help*)
+                PRINT_HELP=YES
+                shift
+                ;;
+            disable*|enable*)
+                if [ -n "$ACTION" ]; then
+                    echo "Error: don't provide more than one actions"
+                    how_to_use 2
+                fi
+                ACTION=$opt
+                shift
+                ;;
+            *) # option unmatched by any
+                echo "Unknown option: $opt"
+                how_to_use 3
+                ;;
+        esac
+    done
+fi
+
+if [ $PRINT_HELP == 'YES' ]; then
+    how_to_use 0
+else
+    # put $cmd output in /tmp, and test if $cmd is installed
+    filename="/tmp/${cmd}.out"
+    $($cmd > "$filename")
+    if [[ $? -eq $fail_code ]]; then
+        echo "Error: ${cmd} not installed"
+        exit
+    fi
+    touchpad_id=`cat $filename | grep "$device_name" |grep -Po '(?<=id=)[0-9]+'`
+    if [ -z $touchpad_id ]; then
+        echo "Error: Touchpad device not found"
+        exit 4
+    fi
+
+    # do the action
+    case $ACTION in
+        enable*)
+            `$cmd --enable $touchpad_id`
+            shift
+            ;;
+        disable*)
+            `$cmd --disable $touchpad_id`
+            shift
+            ;;
+    esac
+    rm $filename
+fi
