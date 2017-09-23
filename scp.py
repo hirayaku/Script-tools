@@ -1,4 +1,4 @@
-#!/usr/bin python3
+#!/usr/bin/python3
 
 import sys, os
 import argparse
@@ -11,8 +11,8 @@ class ExecError(Exception):
 def arg_parser():
     parser = argparse.ArgumentParser(description='SCP(Secure Copy)-made-easy python script')
     parser.add_argument('-p', '--path', help='Path to scp or pscp (default: $PATH or %%PATH%%)') # Add an optional parameter
-    parser.add_argument('src', metavar='if=...', help='Assign the path to source file') # Add a positional parameter
-    parser.add_argument('dest', metavar='of=...', help='Assign the path to destination file')
+    parser.add_argument('src', metavar='if=...', help='Path to the source file') # Add a positional parameter
+    parser.add_argument('dest', metavar='of=...', help='Path to the destination file')
     # Add a must-have non-positional parameter with limited choices
     parser.add_argument('-d', '--direction', required=True, help='Direction of file transfer', choices=['upload', 'download']) 
     # Add an optional parameter with default value and store_const action
@@ -27,8 +27,6 @@ def check_exec(args):
             raise ExecError("Cannot execute " + exec_path)
     else: # If default value of path is used
         exec_path = 'pscp.exe' if os.name == 'nt' else 'scp'
-# Works under Windows. Still need checking under Linux
-# XXX: Under Linux, `scp' may be actually `scp.sh'
         bin_paths = os.environ['PATH'].split(';')
         found = False
         for item in bin_paths:
