@@ -1,2 +1,2 @@
 # Script-tools
-Script tools in bash or python, mostly for everyday entertainment usage.
+Script tools in bash or python or vimL, for dev convenience or fun!
