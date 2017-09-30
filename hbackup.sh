@@ -18,7 +18,7 @@ num_args=$#
 script_name=$0
 help_text="
 $script_name usage:
-\n$script_name  [-h|l|f|i] [-d [-c] <dest_dir>] [-s <src_dir>] [-m <string>]
+\n$script_name  [-h|l|f|i] [-b|B <dest_dir>] [-s <src_dir>] [-m <string>]
 \n              [backup|restore]
 \n
 \n  -h      print help text
@@ -52,7 +52,7 @@ $script_name usage:
 "
 help_text_refined="
 $script_name usage:
-\n$script_name  [-h|l|f] [-d [-c] <dest_dir>] [-s <src_dir>] [backup|restore]
+\n$script_name  [-h|l|f|i] [-b|B <dest_dir>] [-s <src_dir>] [backup|restore]
 "
 info="Control the source files for Xilinx SDK to avoid the buggy IDE"
 version="0.1"
