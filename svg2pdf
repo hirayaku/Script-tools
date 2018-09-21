@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # Get svg file names and strip the suffices
-svg_list=$(ls | grep -oP ".*(?=\.svg$)")
 
 import_path=$1
 export_path=$2
@@ -16,6 +15,7 @@ if [[ "$1" == "-h" || "$2" == "-h" || "$3" == "-h" ]]; then
     echo "       -h                 print this info"
     exit
 else
+    svg_list=$(ls "${import_path}"| grep -oP ".*(?=\.svg$)")
     for file in $svg_list
     do
         echo "Converting ${file}.svg"
