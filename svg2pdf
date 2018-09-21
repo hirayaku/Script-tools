@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# Get svg file names and strip the suffices
+svg_list=$(ls | grep -oP ".*(?=\.svg$)")
+
+import_path=$1
+export_path=$2
+opt=$3
+
+if [[ "$1" == "-h" || "$2" == "-h" || "$3" == "-h" ]]; then
+    echo "Usage: svg2pdf <svg folder> <export folder> [-c|h]"
+    echo ""
+    echo "       <svg folder>       the folder of svg files"
+    echo "       <export folder>    the folder of exported pdf files"
+    echo "       -c                 clean .pdf_tex files"
+    echo "       -h                 print this info"
+    exit
+else
+    for file in $svg_list
+    do
+        echo "Converting ${file}.svg"
+        $(inkscape -D -z --file="${import_path}/$file.svg" --export-pdf="${export_path}/${file}.pdf" --export-latex)
+    done
+
+    if [ "$opt" == "-c" ]; then
+        echo "Removing pdf_tex files in ${export_path}"
+        sleep 0.5
+        $(rm ${export_path}/*.pdf_tex)
+    fi
+fi
