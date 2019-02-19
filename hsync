@@ -1,0 +1,63 @@
+#!/bin/bash
+
+if [ -z `which rsync` ]; then
+    echo "rsync not found"
+    echo "install rsync first"
+    exit 253
+fi
+
+print_help_exit() {
+    echo "Usage: hsync <push|pull>"
+    echo "Remote directory should be defined in $(pwd)/.hsync"
+    exit 255
+}
+
+# check if .hsync exists
+if [ ! -f ".hsync" ]; then
+    echo "Cannot find .hsync file"
+    print_help_exit
+fi
+
+# hsync push
+# hsync pull
+
+optNum=$#
+opt=$@
+localdir="$(realpath $(pwd))/"
+remotedir=`cat .hsync`
+
+if [ $optNum -ne 1 ]; then
+    echo "Usage: hsync <push|pull>"
+    exit 255
+elif [ $opt == "push" ]; then
+    rsync -avP $localdir $remotedir
+elif [ $opt == "pull" ]; then
+    rsyncOpt="-avP"
+    deletes=`rsync -anv --delete $remotedir $localdir | grep -Po '(?<=deleting ).+'`
+
+    if [ -n "$deletes" ]; then
+        ON_RED='\033[41m'
+        GREEN='\033[1;32m'
+        RESET='\033[0m'
+        echo "Local files to delete in $(pwd)/:"
+        for file in $deletes; do
+            echo -ne "-$GREEN$file$RESET\n"
+        done
+        echo -e "$RESET"
+        echo -ne "${ON_RED}Delete?${RESET} [Y|N]: "
+        read answer
+
+        if [ $answer == "Y" ] || [ $answer == "y" ]; then
+            rsyncOpt="$rsyncOpt --delete"
+        elif [ $answer == "Y" ] || [ $answer == "y" ]; then
+            rsyncOpt=$rsyncOpt
+        else
+            echo "Abort"
+            exit 254
+        fi
+    fi
+
+    rsync $rsyncOpt $remotedir $localdir
+else
+    print_help_exit
+fi
