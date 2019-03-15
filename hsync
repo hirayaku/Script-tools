@@ -49,7 +49,7 @@ elif [ $opt == "pull" ]; then
 
         if [ $answer == "Y" ] || [ $answer == "y" ]; then
             rsyncOpt="$rsyncOpt --delete"
-        elif [ $answer == "Y" ] || [ $answer == "y" ]; then
+        elif [ $answer == "N" ] || [ $answer == "n" ]; then
             rsyncOpt=$rsyncOpt
         else
             echo "Abort"
