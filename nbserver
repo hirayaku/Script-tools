@@ -1,0 +1,99 @@
+#!/bin/bash
+
+# nbserver [start [/path/to/working/directory]|end|clean]
+
+print_help_text() {
+    echo -e "Usage:\n nbserver start|stop|clean [/path/to/working/directory]"
+}
+
+argv=$@
+argc=$#
+err=255
+wdir=$HOME
+conf_dir="$HOME/.jupyter"
+
+if [ $argc -eq 0 ]; then
+    print_help_text
+    exit $err
+else
+    cmd=$1
+    case $cmd in
+        start*)
+            # check working directory
+            if [ $argc -ge 2 ]; then
+                if [ -d $2 ]; then
+                    wdir=$2
+                else
+                    echo "Invalid working directory."
+                    print_help_text
+                    exit $err
+                fi
+            fi
+
+            echo $wdir
+            # launch jupyter notebook
+            if [ -f $HOME/.jupyter/jupyter_notebook_config.py  ]; then
+                nohup jupyter notebook --notebook-dir="$wdir" &>"$HOME/.jupyter/server.$(date +%H:%M:%S.%F).log" &
+            else
+                echo "jupyter notebook server not configured" >2
+            fi
+
+            shift
+            ;;
+        stop*)
+            # get background notebook process
+            pid=$(pgrep -u $USER -f jupyter-notebook)
+
+            # kill them
+            if [ -z "$pid" ]; then
+                echo "No background jupyter-notebook process."
+                exit $err
+            else
+                for id in $pid; do
+                    kill -9 $id
+                    if [ $? -eq 0 ]; then
+                        echo "[pid=$id] Process killed "
+                    else
+                        echo "[pid=$id] Process possibly escaped "
+                    fi
+                done
+            fi
+
+            shift
+            ;;
+        clean*)
+            # get all server logs
+            logfiles=$(ls $conf_dir | grep -Po 'server.*log')
+
+            if [ -n "$logfiles" ]; then
+                for log in $logfiles; do
+                    echo $log
+                done
+                
+                echo "Delete these logs? [Y|N]"
+                read answer
+
+                case $answer in
+                    # delete them
+                    Y*|y*)
+                        for log in $logfiles; do
+                            rm "$conf_dir/$log"
+                        done
+                        exit
+                        shift
+                        ;;
+                esac
+                echo "Not deleting these logs."
+            fi
+            exit
+
+            shift
+            ;;
+
+        *) # unrecognized command
+            echo "Invalid argument"
+            print_help_text
+            exit $err
+    esac
+fi
+

@@ -79,9 +79,9 @@ let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
 let g:ycm_confirm_extra_conf = 0
 let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_show_diagnostics_ui = 1
-" ycm debug
-let g:ycm_keep_logfiles = 1
-let g:ycm_log_level = 'debug'
+" " ycm debug
+" let g:ycm_keep_logfiles = 1
+" let g:ycm_log_level = 'debug'
 
 "Configuration for vim-easytags
 let g:easytags_file = '~/.vim/tags'
@@ -92,9 +92,8 @@ let g:easytags_async = 1            " Enable async mode: won't block foreground
 
 "Vim-tmux-navigator
 let g:tmux_navigator_no_mappings = 1
-nnoremap <silent> {Left-Mapping} :TmuxNavigateLeft<cr>
-nnoremap <silent> {Down-Mapping} :TmuxNavigateDown<cr>
-nnoremap <silent> {Up-Mapping} :TmuxNavigateUp<cr>
-nnoremap <silent> {Right-Mapping} :TmuxNavigateRight<cr>
-nnoremap <silent> {Previous-Mapping} :TmuxNavigatePrevious<cr>
-
+nnoremap <silent> <C-H> :TmuxNavigateLeft<cr>
+nnoremap <silent> <C-J> :TmuxNavigateDown<cr>
+nnoremap <silent> <C-K> :TmuxNavigateUp<cr>
+nnoremap <silent> <C-L> :TmuxNavigateRight<cr>
+nnoremap <silent> <C-\> :TmuxNavigatePrevious<cr>
