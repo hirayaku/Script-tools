@@ -30,7 +30,6 @@ else
                 fi
             fi
 
-            echo $wdir
             # launch jupyter notebook
             if [ -f $HOME/.jupyter/jupyter_notebook_config.py  ]; then
                 nohup jupyter notebook --notebook-dir="$wdir" &>"$HOME/.jupyter/server.$(date +%H:%M:%S.%F).log" &
