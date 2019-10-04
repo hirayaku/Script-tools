@@ -57,6 +57,17 @@ nnoremap <S-TAB> :vertical resize -5<ENTER>
 nnoremap <C-P> :tabp<ENTER>
 nnoremap <C-N> :tabn<ENTER>
 
+" block comments
+au FileType c,cpp,java,javascript,bsv nnoremap <leader>c I//<ESC>
+au FileType c,cpp,java,javascript,bsv xnoremap <leader>c :s/^/\/\//g<ENTER>
+au FileType c,cpp,java,javascript,bsv xnoremap <leader>u :s/^\/\///g<ENTER>
+au FileType python,bash nnoremap <leader>c I#<ESC>
+au FileType python,bash xnoremap <leader>c :s/^/#/g<ENTER>
+au FileType python,bash xnoremap <leader>u :s/^#//g<ENTER>
+au FileType vim nnoremap <leader>c I"<ESC>
+au FileType vim xnoremap <leader>c :s/^/"/g<ENTER>
+au FileType vim xnoremap <leader>u :s/^"//g<ENTER>
+
 vnoremap // y/<C-R>"<CR>
 " indent for bsv files
 let b:verilog_indent_modules = 1
@@ -97,3 +108,7 @@ nnoremap <silent> <C-J> :TmuxNavigateDown<cr>
 nnoremap <silent> <C-K> :TmuxNavigateUp<cr>
 nnoremap <silent> <C-L> :TmuxNavigateRight<cr>
 nnoremap <silent> <C-\> :TmuxNavigatePrevious<cr>
+
+"MacVim settings
+set guifont=Monaco:h14
+
