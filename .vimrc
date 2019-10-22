@@ -22,6 +22,8 @@ syntax on
 filetype plugin indent on
 set nu
 set cmdheight=1
+set wildmenu
+set wildmode=full
 set expandtab
 set tabstop=4
 set softtabstop=4
@@ -51,7 +53,6 @@ hi Repeat cterm=italic gui=italic
 hi Label cterm=italic gui=italic
 hi Keyword cterm=italic gui=italic
 hi Exception cterm=italic gui=italic
-"hi Function cterm=italic gui=italic
 
 " Switch between split area
 nnoremap <C-J> <C-W><C-J>
