@@ -6,31 +6,36 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 
-Plugin 'scrooloose/nerdtree'            "File explorer
-Plugin 'majutsushi/tagbar'              "In-file navigation
+" Plugin 'Valloric/YouCompleteMe' "Advanced autocomplete
+Plugin 'majutsushi/tagbar'      "In-file navigation
 Plugin 'ludovicchabant/vim-gutentags'   "Better ctags manager
-Plugin 'bling/vim-airline'              "Fancy bottom bar
-Plugin 'tpope/vim-fugitive'             "Git wrapper
-Plugin 'flazz/vim-colorschemes'         "Plentiful colorschemes for vim
-Plugin 'mileszs/ack.vim'                "Use ack-grep in vim
+Plugin 'preservim/nerdcommenter' " Commenter
+Plugin 'bling/vim-airline'      "Fancy bottom bar
+Plugin 'tpope/vim-fugitive'     "Git wrapper
+Plugin 'flazz/vim-colorschemes' "Plentiful colorschemes for vim
+Plugin 'mileszs/ack.vim'        "Use ack-grep in vim
 Plugin 'christoomey/vim-tmux-navigator' "Seamless move between
-Plugin 'Valloric/YouCompleteMe'         "Advanced autocomplete
+Plugin 'fatih/vim-go'           " golang plugin
 
 call vundle#end()
 
+"colorscheme molokai
 syntax on
 filetype plugin indent on
+
 set nu
 set cmdheight=1
 set wildmenu
 set wildmode=full
-set expandtab
+" tabs
 set tabstop=4
-set softtabstop=4
+" set softtabstop=4
 set shiftwidth=4
+set expandtab
+set smarttab
 
 set foldenable
-set foldlevelstart=10
+set foldlevelstart=20
 set foldmethod=indent
 nnoremap , za
 
@@ -40,46 +45,30 @@ set cindent
 set cinoptions=(0,u0,U0     " Align different lines of arguments
 let mapleader=" "         " Change <leader> to space
 
-colorscheme molokai
-" extra global theme config
+set hlsearch
+nnoremap <leader>h :nohl<ENTER>
+
 hi Normal ctermbg=none
 hi Visual term=reverse cterm=reverse guibg=Grey
-" set special words to italic, see https://stackoverflow.com/questions/3494435/vimrc-make-comments-italic
-set t_ZH=[3m
-set t_ZR=[23m
-hi Comment cterm=italic gui=italic
-hi Conditional cterm=italic gui=italic
-hi Repeat cterm=italic gui=italic
-hi Label cterm=italic gui=italic
-hi Keyword cterm=italic gui=italic
-hi Exception cterm=italic gui=italic
+hi Search ctermfg=white ctermbg=black
 
 " Switch between split area
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-H> <C-W><C-H>
 nnoremap <C-L> <C-W><C-L>
-nnoremap <leader>r <C-W>b
+" some terminals recognize <C-H> as <BS>,
+" vim won't receive <C-W><C-H> unless <BS> remapped
+nnoremap <BS>  <C-W><C-H>
+
 " Resize the current split area
 nnoremap <TAB> :vertical resize +5<ENTER>
 nnoremap <S-TAB> :vertical resize -5<ENTER>
 " Browsing between vim tabs
 nnoremap <C-P> :tabp<ENTER>
 nnoremap <C-N> :tabn<ENTER>
-
-" block comments
-au FileType c,cpp,java,javascript,bsv nnoremap <leader>c I//<ESC>
-au FileType c,cpp,java,javascript,bsv xnoremap <leader>c :s/^/\/\//g<ENTER>
-au FileType c,cpp,java,javascript,bsv xnoremap <leader>u :s/^\/\///g<ENTER>
-au FileType python,bash nnoremap <leader>c I#<ESC>
-au FileType python,bash xnoremap <leader>c :s/^/#/g<ENTER>
-au FileType python,bash xnoremap <leader>u :s/^#//g<ENTER>
-au FileType vim nnoremap <leader>c I"<ESC>
-au FileType vim xnoremap <leader>c :s/^/"/g<ENTER>
-au FileType vim xnoremap <leader>u :s/^"//g<ENTER>
-
-" indent for bsv files
-let b:verilog_indent_modules = 1
+" autocomplete in vim-go
+inoremap <C-c> <C-x><C-o>
 
 " Tagbar plugin conf
 nnoremap <leader>t :TagbarToggle<ENTER>
@@ -90,19 +79,31 @@ let updatetime=500
 set statusline+=%{gutentags#statusline()}
 let g:gutentags_project_root = ['.git', 'Makefile', 'CMakeLists.txt']
 
-" nerdtree conf
-nnoremap <leader>N :NERDTreeToggle<ENTER>
-let g:NERDTreeWinSize=25
+" NerdCommenter conf
+" Add spaces after comment delimiters by default
+let g:NERDSpaceDelims = 1
+" Use compact syntax for prettified multi-line comments
+let g:NERDCompactSexyComs = 1
+" Align line-wise comment delimiters flush left instead of following code indentation
+let g:NERDDefaultAlign = 'left'
+" Set a language to use its alternate delimiters by default
+let g:NERDAltDelims_java = 1
+" Allow commenting and inverting empty lines (useful when commenting a region)
+let g:NERDCommentEmptyLines = 1
+" Enable trimming of trailing whitespace when uncommenting
+let g:NERDTrimTrailingWhitespace = 1
+" Enable NERDCommenterToggle to check all selected lines is commented or not 
+let g:NERDToggleCheckAllLines = 1
 
 " airline conf
 let g:airline_symbols_ascii = 1
 let g:airline#extensions#tagbar#flags='s'
 
 " ycm conf
-" let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
-" let g:ycm_confirm_extra_conf = 0
+let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
+" let g:ycm_confirm_extra_conf = 1
 let g:ycm_autoclose_preview_window_after_insertion = 1
-let g:ycm_show_diagnostics_ui = 1
+let g:ycm_show_diagnostics_ui = 0
 " " ycm debug
 " let g:ycm_keep_logfiles = 1
 " let g:ycm_log_level = 'debug'
@@ -115,6 +116,7 @@ nnoremap <silent> <C-K> :TmuxNavigateUp<cr>
 nnoremap <silent> <C-L> :TmuxNavigateRight<cr>
 nnoremap <silent> <C-\> :TmuxNavigatePrevious<cr>
 
-"MacVim settings
-set guifont=Monaco:h14
+" bluespec indent
+let b:verilog_indent_modules = 1
+let b:verilog_indent_width = 3
 
