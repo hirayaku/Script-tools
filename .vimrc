@@ -5,24 +5,23 @@ filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
-
-Plugin 'Valloric/YouCompleteMe' "Advanced autocomplete
+" Plugin 'Valloric/YouCompleteMe' "Advanced autocomplete
 Plugin 'majutsushi/tagbar'      "In-file navigation
 Plugin 'ludovicchabant/vim-gutentags'   "Better ctags manager
 Plugin 'preservim/nerdcommenter' " Commenter
 Plugin 'bling/vim-airline'      "Fancy bottom bar
-Plugin 'tpope/vim-fugitive'     "Git wrapper
-Plugin 'flazz/vim-colorschemes' "Plentiful colorschemes for vim
+"Plugin 'tpope/vim-fugitive'     "Git wrapper
+Plugin 'altercation/vim-colors-solarized'
 Plugin 'mileszs/ack.vim'        "Use ack-grep in vim
 Plugin 'christoomey/vim-tmux-navigator' "Seamless move between
-Plugin 'fatih/vim-go'           " golang plugin
+"Plugin 'fatih/vim-go'           " golang plugin
 
 call vundle#end()
 
-"colorscheme molokai
 syntax on
 filetype plugin indent on
 
+" colorscheme solarized
 set nu
 set cmdheight=1
 set wildmenu
@@ -47,8 +46,8 @@ let mapleader=" "         " Change <leader> to space
 set hlsearch
 nnoremap <leader>h :nohl<ENTER>
 
-hi Normal ctermbg=none
-hi Visual term=reverse cterm=reverse
+" hi Normal ctermbg=none
+hi Visual ctermbg=Grey
 hi Search cterm=bold gui=bold ctermbg=LightRed ctermfg=Black guibg=LightRed guifg=Black
 
 nnoremap <leader>r :source $MYVIMRC<CR>
@@ -71,14 +70,16 @@ nnoremap <C-N> :tabn<ENTER>
 " autocomplete in vim-go
 " inoremap <C-c> <C-x><C-o>
 
+" search tags up to $HOME
+set tags+=tags;~
+
 " Tagbar plugin conf
 nnoremap <leader>t :TagbarToggle<ENTER>
 let g:tagbar_width = 30
 let updatetime=500
 
 " gutentags conf
-set statusline+=%{gutentags#statusline()}
-let g:gutentags_project_root = ['.git', 'Makefile', 'CMakeLists.txt']
+let g:gutentags_project_root = ['.git', '.hg', '.svn', 'package.json']
 
 " NerdCommenter conf
 " Add spaces after comment delimiters by default
@@ -91,7 +92,7 @@ let g:NERDDefaultAlign = 'left'
 let g:NERDCommentEmptyLines = 1
 " Enable trimming of trailing whitespace when uncommenting
 let g:NERDTrimTrailingWhitespace = 1
-" Enable NERDCommenterToggle to check all selected lines is commented or not 
+" Enable NERDCommenterToggle to check all selected lines is commented or not
 let g:NERDToggleCheckAllLines = 1
 " comment delimiters for languages not defined in NERDCommenter
 let g:NERDCustomDelimiters = {
