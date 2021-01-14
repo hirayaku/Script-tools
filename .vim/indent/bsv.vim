@@ -82,16 +82,6 @@ function GetBSVIndent()
       echo vverb_str "De-indent after a multiple-line comment."
     endif
 
-  " Indent after if/else/for/case/always/initial/specify/fork blocks
-  elseif last_line =~ '`\@<!\<\(if\|else\)\>' ||
-    \ last_line =~ '^\s*\<\(for\|case\%[[zx]]\|do\|foreach\|randcase\)\>' ||
-    \ last_line =~ '^\s*\<\(always\|always_comb\|always_ff\|always_latch\)\>' ||
-    \ last_line =~ '^\s*\<\(initial\|specify\|fork\|final\)\>'
-    if last_line !~ '\(;\|\<end\>\)\s*' . vlog_comment . '*$' ||
-      \ last_line =~ '\(//\|/\*\).*\(;\|\<end\>\)\s*' . vlog_comment . '*$'
-      let ind = ind + offset
-      if vverb | echo vverb_str "Indent after a block statement." | endif
-    endif
   " Indent after function/task/class/package/sequence/clocking/
   " rule/method/interface/covergroup/property/program blocks
   elseif last_line =~ '^\s*\<\(function\|task\|class\|package\)\>' ||
@@ -104,6 +94,17 @@ function GetBSVIndent()
       if vverb
 	echo vverb_str "Indent after function/task/class block statement."
       endif
+    endif
+
+  " Indent after if/else/for/case/always/initial/specify/fork blocks
+  elseif last_line =~ '`\@<!\<\(if\|else\)\>' ||
+    \ last_line =~ '^\s*\<\(for\|case\%[[zx]]\|do\|foreach\|randcase\)\>' ||
+    \ last_line =~ '^\s*\<\(always\|always_comb\|always_ff\|always_latch\)\>' ||
+    \ last_line =~ '^\s*\<\(initial\|specify\|fork\|final\)\>'
+    if last_line !~ '\(;\|\<end\>\)\s*' . vlog_comment . '*$' ||
+      \ last_line =~ '\(//\|/\*\).*\(;\|\<end\>\)\s*' . vlog_comment . '*$'
+      let ind = ind + offset
+      if vverb | echo vverb_str "Indent after a block statement." | endif
     endif
 
   " Indent after module/function/task/specify/fork blocks
