@@ -5,23 +5,27 @@ filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
-" Plugin 'Valloric/YouCompleteMe' "Advanced autocomplete
-Plugin 'majutsushi/tagbar'      "In-file navigation
+
+Plugin 'Valloric/YouCompleteMe'         "Advanced autocomplete
+Plugin 'majutsushi/tagbar'              "In-file navigation
 Plugin 'ludovicchabant/vim-gutentags'   "Better ctags manager
-Plugin 'preservim/nerdcommenter' " Commenter
-Plugin 'bling/vim-airline'      "Fancy bottom bar
-"Plugin 'tpope/vim-fugitive'     "Git wrapper
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'mileszs/ack.vim'        "Use ack-grep in vim
+Plugin 'preservim/nerdcommenter'        "Commenter
+Plugin 'preservim/nerdtree'             "File navigator
+Plugin 'bling/vim-airline'              "Fancy bottom bar
+Plugin 'tpope/vim-fugitive'             "Git wrapper
+Plugin 'flazz/vim-colorschemes'         "Plentiful colorschemes for vim
+Plugin 'mileszs/ack.vim'                "Use ack-grep in vim
 Plugin 'christoomey/vim-tmux-navigator' "Seamless move between
-"Plugin 'fatih/vim-go'           " golang plugin
+Plugin 'fatih/vim-go'                   " golang plugin
 
 call vundle#end()
 
 syntax on
 filetype plugin indent on
 
-" colorscheme solarized
+" reload this vimrc
+nnoremap <leader>r :source $MYVIMRC<CR>
+
 set nu
 set cmdheight=1
 set wildmenu
@@ -40,17 +44,24 @@ nnoremap , za
 set autoindent
 set smartindent
 set cindent
-set cinoptions=(0,u0,U0     " Align different lines of arguments
-let mapleader=" "         " Change <leader> to space
+" align function arguments in multiple lines
+set cinoptions=(0,u0,U0
+" change <leader> to space
+let mapleader=" "
 
 set hlsearch
-nnoremap <leader>h :nohl<ENTER>
+nnoremap <leader>h :nohl<CR>
+" when search the current word don't jump to next match
+nnoremap <silent> * :let @/= '\<' . expand('<cword>') . '\>' <bar> set hls <cr>
 
-" hi Normal ctermbg=none
-hi Visual ctermbg=Grey
+" open tag in a new window
+nnoremap <leader>] <C-w><C-]><C-w>T
+" close tag window and jump back
+nnoremap <leader>[ <C-w>c
+
+hi Normal ctermbg=none
+hi Visual term=reverse cterm=reverse
 hi Search cterm=bold gui=bold ctermbg=LightRed ctermfg=Black guibg=LightRed guifg=Black
-
-nnoremap <leader>r :source $MYVIMRC<CR>
 
 " Switch between split area
 nnoremap <C-J> <C-W><C-J>
@@ -59,27 +70,26 @@ nnoremap <C-H> <C-W><C-H>
 nnoremap <C-L> <C-W><C-L>
 " some terminals recognize <C-H> as <BS>,
 " vim won't receive <C-W><C-H> unless <BS> remapped
-" nnoremap <BS>  <C-W><C-H>
+nnoremap <BS>  <C-W><C-H>
 
 " Resize the current split area
-nnoremap <TAB> :vertical resize +5<ENTER>
-nnoremap <S-TAB> :vertical resize -5<ENTER>
+nnoremap <TAB> :vertical resize +5<CR>
+nnoremap <S-TAB> :vertical resize -5<CR>
 " Browsing between vim tabs
-nnoremap <C-P> :tabp<ENTER>
-nnoremap <C-N> :tabn<ENTER>
-" autocomplete in vim-go
-" inoremap <C-c> <C-x><C-o>
-
-" search tags up to $HOME
-set tags+=tags;~
+nnoremap <C-P> :tabp<CR>
+nnoremap <C-N> :tabn<CR>
 
 " Tagbar plugin conf
-nnoremap <leader>t :TagbarToggle<ENTER>
+nnoremap <leader>t :TagbarToggle<CR>
 let g:tagbar_width = 30
+let g:tagbar_foldlevel = 2
 let updatetime=500
 
 " gutentags conf
-let g:gutentags_project_root = ['.git', '.hg', '.svn', 'package.json']
+set statusline+=%{gutentags#statusline()}
+let g:gutentags_project_root = ['.git', 'Makefile', 'CMakeLists.txt', 'package.json']
+
+nnoremap <leader>e :NERDTreeToggle<CR>
 
 " NerdCommenter conf
 " Add spaces after comment delimiters by default
@@ -92,7 +102,7 @@ let g:NERDDefaultAlign = 'left'
 let g:NERDCommentEmptyLines = 1
 " Enable trimming of trailing whitespace when uncommenting
 let g:NERDTrimTrailingWhitespace = 1
-" Enable NERDCommenterToggle to check all selected lines is commented or not
+" Enable NERDCommenterToggle to check all selected lines is commented or not 
 let g:NERDToggleCheckAllLines = 1
 " comment delimiters for languages not defined in NERDCommenter
 let g:NERDCustomDelimiters = {
@@ -122,6 +132,7 @@ nnoremap <silent> <C-\> :TmuxNavigatePrevious<cr>
 
 " bluespec indent
 let b:verilog_indent_modules = 1
-let b:verilog_indent_width = 3
-autocmd FileType bsv setlocal tabstop=3 shiftwidth=3 expandtab
+let b:verilog_indent_width = 4
+" special indent rules for bsv
+autocmd FileType bsv set nocindent cinoptions=
 
