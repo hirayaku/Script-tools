@@ -335,7 +335,8 @@ syntax keyword bsv_bool True
 syntax keyword bsv_bool False
 syntax keyword bsv_function mkReg mkRegU mkRegA mkRWire mkWire mkFIFO mkFIFO1 mkFIFOF mkFIFOF1 mkSizedFIFO
 syntax keyword bsv_function mkBypassWire mkDWire mkPulseWire
-syntax keyword bsv_function pack unpack zeroExtend signExtend truncate
+syntax keyword bsv_function pack unpack zeroExtend signExtend truncate truncateLSB
+syntax keyword bsv_function parity reverseBits countOnes countZerosMSB countZerosLSB
 syntax keyword bsv_function fromInteger inLiteralRange negate
 syntax keyword bsv_function minBound maxBound
 syntax keyword bsv_function signedShiftRight div mod exp log2 add abs max min quot rem

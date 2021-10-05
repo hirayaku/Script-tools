@@ -78,6 +78,8 @@ nnoremap <S-TAB> :vertical resize -5<CR>
 " Browsing between vim tabs
 nnoremap <C-P> :tabp<CR>
 nnoremap <C-N> :tabn<CR>
+" autocomplete in vim-go
+" inoremap <C-c> <C-x><C-o>
 
 " Tagbar plugin conf
 nnoremap <leader>t :TagbarToggle<CR>
@@ -134,5 +136,6 @@ nnoremap <silent> <C-\> :TmuxNavigatePrevious<cr>
 let b:verilog_indent_modules = 1
 let b:verilog_indent_width = 4
 " special indent rules for bsv
-autocmd FileType bsv set nocindent cinoptions=
+autocmd FileType bsv set expandtab smarttab nocindent cinoptions=
+autocmd BufRead,BufNew ms set ft=bsv
 
