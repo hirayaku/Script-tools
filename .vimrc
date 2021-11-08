@@ -23,9 +23,6 @@ call vundle#end()
 syntax on
 filetype plugin indent on
 
-" reload this vimrc
-nnoremap <leader>r :source $MYVIMRC<CR>
-
 set nu
 set cmdheight=1
 set wildmenu
@@ -48,6 +45,10 @@ set cindent
 set cinoptions=(0,u0,U0
 " change <leader> to space
 let mapleader=" "
+
+" save and restore session
+nnoremap <leader>s :mksession! .session.vim <cr>
+nnoremap <leader>r :so .session.vim <cr>
 
 set hlsearch
 nnoremap <leader>h :nohl<CR>
