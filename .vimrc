@@ -16,7 +16,7 @@ Plugin 'tpope/vim-fugitive'             "Git wrapper
 Plugin 'flazz/vim-colorschemes'         "Plentiful colorschemes for vim
 Plugin 'mileszs/ack.vim'                "Use ack-grep in vim
 Plugin 'christoomey/vim-tmux-navigator' "Seamless move between
-Plugin 'fatih/vim-go'                   " golang plugin
+" Plugin 'fatih/vim-go'                   " golang plugin
 
 call vundle#end()
 
@@ -63,6 +63,16 @@ hi Normal ctermbg=none
 hi Visual term=reverse cterm=reverse
 hi Search cterm=bold gui=bold ctermbg=LightRed ctermfg=Black guibg=LightRed guifg=Black
 
+" colors for vimdiff
+" green for addition
+highlight DiffAdd    cterm=bold ctermfg=7 ctermbg=34 gui=none guifg=bg guibg=Red
+" light pink for deletion
+highlight DiffDelete cterm=bold ctermfg=7 ctermbg=8 gui=none guifg=bg guibg=Red 
+" blue for changes
+highlight DiffChange cterm=bold ctermfg=7 ctermbg=27 gui=none guifg=bg guibg=Red
+" red for different texts
+highlight DiffText   cterm=bold ctermfg=7 ctermbg=9 gui=none guifg=bg guibg=Red
+
 " Switch between split area
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
@@ -78,8 +88,6 @@ nnoremap <S-TAB> :vertical resize -5<CR>
 " Browsing between vim tabs
 nnoremap <C-P> :tabp<CR>
 nnoremap <C-N> :tabn<CR>
-" autocomplete in vim-go
-" inoremap <C-c> <C-x><C-o>
 
 " Tagbar plugin conf
 nnoremap <leader>t :TagbarToggle<CR>
@@ -108,6 +116,8 @@ let g:NERDTrimTrailingWhitespace = 1
 let g:NERDToggleCheckAllLines = 1
 " comment delimiters for languages not defined in NERDCommenter
 let g:NERDCustomDelimiters = {
+    \ 'c': {'left': '//', 'leftAlt': '/*', 'rightAlt': '*/' },
+    \ 'asm': {'left': '//', 'leftAlt': '/*', 'rightAlt': '*/' },
     \ 'bsv': {'left': '//', 'leftAlt': '/*', 'rightAlt': '*/' }
     \}
 
@@ -132,10 +142,13 @@ nnoremap <silent> <C-K> :TmuxNavigateUp<cr>
 nnoremap <silent> <C-L> :TmuxNavigateRight<cr>
 nnoremap <silent> <C-\> :TmuxNavigatePrevious<cr>
 
+" special indent rules for bsv
+autocmd FileType bsv set expandtab smarttab nocindent cinoptions=
+autocmd BufNewFile,BufRead *.ms set ft=bsv
 " bluespec indent
 let b:verilog_indent_modules = 1
 let b:verilog_indent_width = 4
-" special indent rules for bsv
-autocmd FileType bsv set expandtab smarttab nocindent cinoptions=
-autocmd BufRead,BufNew ms set ft=bsv
+
+" asm
+autocmd FileType asm set tabstop=2 shiftwidth=2
 

@@ -2,6 +2,7 @@
 " Language:    Bluespec System Verilog (BSV)
 " Maintainer:  Hadar Agam -- hadar at bluespec dot com
 " Last Change: Oct 24 2006 
+" License:     Proprietary
 
 " work with vim < 6.0
 if version < 600
@@ -30,6 +31,9 @@ syntax match   bsv_number "\(\<\d\+\|\)'[oO]\s*[0-7_xXzZ?]\+\>"
 syntax match   bsv_number "\(\<\d\+\|\)'[dD]\s*[0-9_xXzZ?]\+\>"
 syntax match   bsv_number "\(\<\d\+\|\)'[hH]\s*[0-9a-fA-F_xXzZ?]\+\>"
 syntax match   bsv_number "\<[+-]\=[0-9_]\+\(\.[0-9_]*\|\)\(e[0-9_]*\|\)\>"
+" for Maybe
+syntax match   bsv_number "\<Valid\>"
+syntax match   bsv_number "\<Invalid\>"
  
 " strings
 syntax region bsv_string start=/"/ skip=/\\"/ end=/"/
@@ -162,7 +166,6 @@ syntax keyword bsv_statement not
 syntax keyword bsv_statement notif0
 syntax keyword bsv_statement notif1
 syntax keyword bsv_statement null
-syntax keyword bsv_statement numeric
 syntax keyword bsv_statement or
 syntax keyword bsv_statement output
 syntax keyword bsv_statement package
@@ -333,7 +336,8 @@ syntax keyword bsv_typeclass Add Max Log
 " frequently used expressions
 syntax keyword bsv_bool True
 syntax keyword bsv_bool False
-syntax keyword bsv_function mkReg mkRegU mkRegA mkRWire mkWire mkFIFO mkFIFO1 mkFIFOF mkFIFOF1 mkSizedFIFO
+syntax keyword bsv_function mkReg mkRegU mkRegA mkRWire mkWire
+syntax keyword bsv_function mkFIFO mkFIFO1 mkFIFOF mkFIFOF1 mkSizedFIFO mkLFIFO mkLFIFO1
 syntax keyword bsv_function mkBypassWire mkDWire mkPulseWire
 syntax keyword bsv_function pack unpack zeroExtend signExtend truncate truncateLSB
 syntax keyword bsv_function parity reverseBits countOnes countZerosMSB countZerosLSB
