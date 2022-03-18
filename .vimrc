@@ -2,23 +2,23 @@ set nocompatible
 set encoding=utf-8
 filetype off
 
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-Plugin 'VundleVim/Vundle.vim'
+call plug#begin()
 
-Plugin 'Valloric/YouCompleteMe'         "Advanced autocomplete
-Plugin 'majutsushi/tagbar'              "In-file navigation
-Plugin 'ludovicchabant/vim-gutentags'   "Better ctags manager
-Plugin 'preservim/nerdcommenter'        "Commenter
-Plugin 'preservim/nerdtree'             "File navigator
-Plugin 'bling/vim-airline'              "Fancy bottom bar
-Plugin 'tpope/vim-fugitive'             "Git wrapper
-Plugin 'flazz/vim-colorschemes'         "Plentiful colorschemes for vim
-Plugin 'mileszs/ack.vim'                "Use ack-grep in vim
-Plugin 'christoomey/vim-tmux-navigator' "Seamless move between
-" Plugin 'fatih/vim-go'                   " golang plugin
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'majutsushi/tagbar'              "In-file navigation
+Plug 'ludovicchabant/vim-gutentags'   "Better ctags manager
+Plug 'preservim/nerdcommenter'        "Commenter
+Plug 'preservim/nerdtree'             "File navigator
+Plug 'vim-airline/vim-airline'        "Fancy status bar
+Plug 'jeffkreeftmeijer/vim-numbertoggle' "Toggle relative/absolute nu
+Plug 'tpope/vim-fugitive'             "Git wrapper
+Plug 'flazz/vim-colorschemes'         "Plentiful colorschemes for vim
+Plug 'morhetz/gruvbox'                "Gruvbox theme
+Plug 'mileszs/ack.vim'                "Use ack-grep in vim
+Plug 'christoomey/vim-tmux-navigator' "Seamless move between
+Plug 'vim-python/python-syntax'       "Better python syntax highlighting
 
-call vundle#end()
+call plug#end()
 
 syntax on
 filetype plugin indent on
@@ -68,7 +68,7 @@ hi Search cterm=bold gui=bold ctermbg=LightRed ctermfg=Black guibg=LightRed guif
 " green for addition
 highlight DiffAdd    cterm=bold ctermfg=7 ctermbg=34 gui=none guifg=bg guibg=Red
 " light pink for deletion
-highlight DiffDelete cterm=bold ctermfg=7 ctermbg=8 gui=none guifg=bg guibg=Red 
+highlight DiffDelete cterm=bold ctermfg=7 ctermbg=8 gui=none guifg=bg guibg=Red
 " blue for changes
 highlight DiffChange cterm=bold ctermfg=7 ctermbg=27 gui=none guifg=bg guibg=Red
 " red for different texts
@@ -90,11 +90,22 @@ nnoremap <S-TAB> :vertical resize -5<CR>
 nnoremap <C-P> :tabp<CR>
 nnoremap <C-N> :tabn<CR>
 
-" Tagbar plugin conf
+" ------------- theme ---------------
+set background=dark
+autocmd vimenter * nested colorscheme gruvbox
+let g:gruvbox_contrast_dark = 'soft'
+
+" ------------ tagbar ------------
 nnoremap <leader>t :TagbarToggle<CR>
 let g:tagbar_width = 30
 let g:tagbar_foldlevel = 2
-let updatetime=500
+
+" ------------ coc.nvim --------------
+let g:coc_disable_startup_warning = 1
+source $HOME/.vim/coc-settings.vim
+
+" ------------ airline ------------
+let g:airline#extensions#whitespace#enabled = 0
 
 " gutentags conf
 set statusline+=%{gutentags#statusline()}
@@ -122,19 +133,6 @@ let g:NERDCustomDelimiters = {
     \ 'bsv': {'left': '//', 'leftAlt': '/*', 'rightAlt': '*/' }
     \}
 
-" airline conf
-let g:airline_symbols_ascii = 1
-let g:airline#extensions#tagbar#flags='s'
-
-" ycm conf
-" let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
-" let g:ycm_confirm_extra_conf = 1
-let g:ycm_autoclose_preview_window_after_insertion = 1
-let g:ycm_show_diagnostics_ui = 0
-" " ycm debug
-" let g:ycm_keep_logfiles = 1
-" let g:ycm_log_level = 'debug'
-
 " Vim-tmux-navigator
 let g:tmux_navigator_no_mappings = 1
 nnoremap <silent> <C-H> :TmuxNavigateLeft<cr>
@@ -152,4 +150,6 @@ let b:verilog_indent_width = 4
 
 " asm
 autocmd FileType asm set tabstop=2 shiftwidth=2
+
+let g:python_highlight_all = 1
 
