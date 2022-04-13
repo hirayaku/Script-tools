@@ -1,4 +1,4 @@
-set nocompatible
+-
 set encoding=utf-8
 filetype off
 
@@ -17,6 +17,8 @@ Plug 'morhetz/gruvbox'                "Gruvbox theme
 Plug 'mileszs/ack.vim'                "Use ack-grep in vim
 Plug 'christoomey/vim-tmux-navigator' "Seamless move between
 Plug 'vim-python/python-syntax'       "Better python syntax highlighting
+Plug 'rust-lang/rust.vim'             "Rust language
+Plug 'Yggdroot/indentLine'            "Vertical indent line
 
 call plug#end()
 
@@ -26,7 +28,7 @@ filetype plugin indent on
 set nu
 set cmdheight=1
 set wildmenu
-set wildmode=full
+set wildmode=list:longest,full
 " tabs
 set tabstop=4
 set shiftwidth=4
@@ -36,7 +38,6 @@ set smarttab
 set foldenable
 set foldlevelstart=20
 set foldmethod=indent
-nnoremap , za
 
 set autoindent
 set smartindent
@@ -74,6 +75,11 @@ highlight DiffChange cterm=bold ctermfg=7 ctermbg=27 gui=none guifg=bg guibg=Red
 " red for different texts
 highlight DiffText   cterm=bold ctermfg=7 ctermbg=9 gui=none guifg=bg guibg=Red
 
+" " ------------- theme ---------------
+set background=dark
+autocmd vimenter * nested colorscheme gruvbox
+let g:gruvbox_contrast_dark = 'soft'
+
 " Switch between split area
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
@@ -83,17 +89,21 @@ nnoremap <C-L> <C-W><C-L>
 " vim won't receive <C-W><C-H> unless <BS> remapped
 nnoremap <BS>  <C-W><C-H>
 
+" launch a terminal window at the bottom
+" in the terminal window, <C-w> is the gateway for vim window commands
+map <leader>T :bo term ++close<cr>
+tmap <leader>T <C-w>:bo term ++close<cr>
+tmap <C-J> <C-W><C-J>
+tmap <C-K> <C-W><C-K>
+tmap <C-H> <C-W><C-H>
+tmap <C-L> <C-W><C-L>
+
 " Resize the current split area
 nnoremap <TAB> :vertical resize +5<CR>
 nnoremap <S-TAB> :vertical resize -5<CR>
 " Browsing between vim tabs
 nnoremap <C-P> :tabp<CR>
 nnoremap <C-N> :tabn<CR>
-
-" ------------- theme ---------------
-set background=dark
-autocmd vimenter * nested colorscheme gruvbox
-let g:gruvbox_contrast_dark = 'soft'
 
 " ------------ tagbar ------------
 nnoremap <leader>t :TagbarToggle<CR>
@@ -152,4 +162,6 @@ let b:verilog_indent_width = 4
 autocmd FileType asm set tabstop=2 shiftwidth=2
 
 let g:python_highlight_all = 1
+
+let g:indentLine_char_list = ['│']
 
